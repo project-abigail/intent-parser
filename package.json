@@ -1,0 +1,30 @@
+{
+  "name": "intent-parser",
+  "version": "1.0.0",
+  "description": "A basic intent parser designed for Project Abigail.",
+  "main": "dist/intent-parser.js",
+  "jsnext:main": "src/intent-parser.js",
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "keywords": [
+    "Intent parser",
+    "NLP"
+  ],
+  "author": "Guillaume Marty <edo999@gmail.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "chrono-node": "^1.2.4",
+    "moment": "^2.15.1",
+    "twitter_cldr": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.8.0",
+    "babel-preset-latest": "^6.16.0",
+    "rollup": "^0.36.1",
+    "rollup-plugin-babel": "^2.6.1"
+  },
+  "directories": {
+    "test": "test"
+  }
+}

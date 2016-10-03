@@ -1,0 +1,21 @@
+{
+  "presets": [
+    [
+      "latest",
+      {
+        "es2015": {
+          "modules": false
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "transform-es2015-classes",
+      {
+        "loose": true
+      }
+    ],
+    "external-helpers"
+  ]
+}
