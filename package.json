@@ -5,7 +5,8 @@
   "main": "dist/intent-parser.js",
   "jsnext:main": "src/intent-parser.js",
   "scripts": {
-    "build": "rollup --config"
+    "build": "rollup --config",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "Intent parser",
