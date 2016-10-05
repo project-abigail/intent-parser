@@ -2,11 +2,11 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chrono-node'), require('moment'), require('twitter_cldr')) :
   typeof define === 'function' && define.amd ? define(['chrono-node', 'moment', 'twitter_cldr'], factory) :
   (global.IntentParser = factory(global.chrono,global.moment,global.TwitterCldr));
-}(this, (function (chrono,moment,TwitterCldr) { 'use strict';
+}(this, (function (chrono,moment,TwitterCldr$1) { 'use strict';
 
 chrono = 'default' in chrono ? chrono['default'] : chrono;
 moment = 'default' in moment ? moment['default'] : moment;
-TwitterCldr = 'default' in TwitterCldr ? TwitterCldr['default'] : TwitterCldr;
+TwitterCldr$1 = 'default' in TwitterCldr$1 ? TwitterCldr$1['default'] : TwitterCldr$1;
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
@@ -349,6 +349,8 @@ dayPeriodsParser.extract = function (text, ref, match) {
       hour = 22;
       meridiem = 1;
       break;
+    default:
+      break;
   }
 
   return new chrono.ParsedResult({
@@ -470,7 +472,7 @@ var TimeParser = function () {
 
 var PATTERNS = {
   en: {
-    patterns: [/^Remind (.+?) (?:to|at|on|by|that|about)\b/i, /^Where (?:am|are|is) (.+?) (?:at|on|by)\b/i, /^What (?:am|are|is) (.+?) doing\b/i, /([^ ]+ (?:and|&) [^ ]+)/i],
+    patterns: [/^Remind (.+?) (?:to|at|on|by|that|about)\b/i, /^Where (?:am|are|is) (.+?) (?:at|on|by)\b/i, /^Where (?:am|are|is) (.+?) supposed to\b/i, /^Where should (.+?) go\b/i, /^What (?:am|are|is) (.+?) doing\b/i, /^What (?:am|are|is) (.+?) supposed to\b/i, /^What should (.+?) do\b/i, /^What (?:do|does) (.+?) do\b/i, /^What is (.+?)(?:'s)? (?:schedule|planning|calendar|agenda)\b/i, /([^ ]+ (?:and|&) [^ ]+)/i],
     // @see http://www.unicode.org/cldr/charts/29/summary/en.html#6402
     listBreaker: /,? (?:and|&) |, /gi
   },
@@ -677,8 +679,8 @@ var ReminderConfirmation = function () {
 
     this.locale = locale;
 
-    var cldr = TwitterCldr.load(locale);
-    this[p$5.listFormatter] = new cldr.ListFormatter();
+    TwitterCldr$1.set_data(TwitterCldrDataBundle);
+    this[p$5.listFormatter] = new TwitterCldr$1.ListFormatter();
   }
 
   /**
@@ -720,17 +722,17 @@ var ReminderConfirmation = function () {
     return PATTERNS$2[locale][prop];
   };
 
-  ReminderConfirmation.prototype[p$5.formatUser] = function (reminder) {
-    var recipients = reminder.recipients;
+  ReminderConfirmation.prototype[p$5.formatUser] = function (_ref) {
+    var recipients = _ref.recipients;
 
     var formatUser = this[p$5.getLocalised]('formatUser');
-    var formattedRecipients = recipients.map(formatUser);
-    return this[p$5.listFormatter].format(formattedRecipients);
+    var formattedUsers = recipients.map(formatUser);
+    return this[p$5.listFormatter].format(formattedUsers);
   };
 
-  ReminderConfirmation.prototype[p$5.formatAction] = function (reminder) {
-    var action = reminder.action;
-    var cleaned = reminder.cleaned;
+  ReminderConfirmation.prototype[p$5.formatAction] = function (_ref2) {
+    var action = _ref2.action;
+    var cleaned = _ref2.cleaned;
 
     var formatUser = this[p$5.getLocalised]('formatUser');
     var formattedAction = formatUser(action);
@@ -753,9 +755,8 @@ var ReminderConfirmation = function () {
     return 'to ' + formattedAction;
   };
 
-  ReminderConfirmation.prototype[p$5.formatTime] = function (reminder) {
-    var due = reminder.due;
-
+  ReminderConfirmation.prototype[p$5.formatTime] = function (_ref3) {
+    var due = _ref3.due;
 
     if (this[p$5.isToday](due)) {
       var hour = this[p$5.formatHoursAndMinutes](due);
@@ -763,6 +764,7 @@ var ReminderConfirmation = function () {
     } else if (this[p$5.isTomorrow](due)) {
       var _hour = this[p$5.formatHoursAndMinutes](due);
       return 'at ' + _hour + ' tomorrow';
+      // @todo Add a pattern here with the weekday if within 7 days.
     } else if (this[p$5.isThisMonth](due)) {
       return moment(due).format('[on the] Do');
     }
@@ -810,7 +812,7 @@ var ReminderConfirmation = function () {
       var nextHour = date.add(1, 'hour');
       format = nextHour.format('[quarter to] h A');
     } else {
-      format = date.format('h m A'); // 6 24 AM
+      format = date.format('h:m A'); // 6:24 AM
     }
 
     // Some speech synthesisers pronounce "AM" as in "ham" (not "A. M.").
@@ -862,7 +864,166 @@ var ReminderRefiner = function () {
   return ReminderRefiner;
 }();
 
+/* global TwitterCldr, TwitterCldrDataBundle */
+
+var p$6 = Object.freeze({
+  // Properties
+  time: Symbol('time'),
+  users: Symbol('users'),
+  listFormatter: Symbol('listFormatter'),
+
+  // Methods
+  formatTime: Symbol('formatTime'),
+  isToday: Symbol('isToday'),
+  isTomorrow: Symbol('isTomorrow'),
+  isThisMonth: Symbol('isThisMonth'),
+  formatHoursAndMinutes: Symbol('formatHoursAndMinutes')
+});
+
+var PATTERNS$4 = {
+  en: {
+    formatUser: function formatUser(user) {
+      return user.replace(/\bme\b/gi, 'you').replace(/\bI am\b/gi, 'you are').replace(/\bI have\b/gi, 'you have').replace(/\bI will\b/gi, 'you will').replace(/\bI\b/gi, 'you').replace(/\bmy\b/gi, 'your').replace(/\bmine\b/gi, 'yours');
+    }
+  },
+  fr: {
+    formatUser: function formatUser(user) {
+      return user;
+    }
+  },
+  ja: {
+    formatUser: function formatUser(user) {
+      return user;
+    }
+  }
+};
+
+var QueryConfirmation = function () {
+  function QueryConfirmation(_ref) {
+    var due = _ref.due;
+    var recipients = _ref.recipients;
+    classCallCheck(this, QueryConfirmation);
+
+    TwitterCldr.set_data(TwitterCldrDataBundle);
+    this[p$6.listFormatter] = new TwitterCldr.ListFormatter();
+
+    this[p$6.time] = due;
+    this[p$6.users] = recipients;
+  }
+
+  QueryConfirmation.prototype.confirm = function confirm(reminder) {
+    // We use the users from the original query rather than the found reminder.
+    var users = this[p$6.formatUser](this[p$6.users]);
+
+    if (!reminder) {
+      var _time = this[p$6.formatTime]({ due: this[p$6.time] });
+      return 'I can\'t find anything scheduled for ' + users + ' ' + _time + '.';
+    }
+
+    var action = reminder.action;
+    var time = this[p$6.formatTime](reminder);
+
+    if (users === 'you' || this[p$6.users].length >= 1) {
+      return time + ', ' + users + ' have the following activity: "' + action + '".';
+    }
+
+    return time + ', ' + users + ' has the following activity: "' + action + '".';
+  };
+
+  QueryConfirmation.prototype[p$6.formatUser] = function (users) {
+    var formattedUsers = users.map(PATTERNS$4.en.formatUser);
+    return this[p$6.listFormatter].format(formattedUsers);
+  };
+
+  QueryConfirmation.prototype[p$6.formatTime] = function (_ref2) {
+    var due = _ref2.due;
+
+    var hour = this[p$6.formatHoursAndMinutes](due);
+
+    if (this[p$6.isToday](due)) {
+      return 'at ' + hour + ' today';
+    } else if (this[p$6.isTomorrow](due)) {
+      return 'at ' + hour + ' tomorrow';
+      // @todo Add a pattern here with the weekday if within 7 days.
+    } else if (this[p$6.isThisMonth](due)) {
+      var _day = moment(due).format('Do');
+      return 'at ' + hour + ' on the ' + _day;
+    }
+
+    var day = moment(due).format('MMMM [the] Do');
+    return 'at ' + hour + ' on ' + day;
+  };
+
+  QueryConfirmation.prototype[p$6.isToday] = function (date) {
+    var today = moment().startOf('day');
+    var tomorrow = moment().add(1, 'day').startOf('day');
+    return moment(date).isBetween(today, tomorrow);
+  };
+
+  QueryConfirmation.prototype[p$6.isTomorrow] = function (date) {
+    var tomorrow = moment().add(1, 'day').startOf('day');
+    var in2days = moment().add(2, 'day').startOf('day');
+    return moment(date).isBetween(tomorrow, in2days);
+  };
+
+  QueryConfirmation.prototype[p$6.isThisMonth] = function (date) {
+    var thisMonth = moment().startOf('month');
+    var nextMonth = moment().add(1, 'month').startOf('month');
+    return moment(date).isBetween(thisMonth, nextMonth);
+  };
+
+  /**
+   * Return a string from a date suitable for speech synthesis.
+   *
+   * @param {Date} date
+   * @return {string}
+   */
+
+
+  QueryConfirmation.prototype[p$6.formatHoursAndMinutes] = function (date) {
+    date = moment(date);
+    var format = void 0;
+
+    if (date.minute() === 0) {
+      format = date.format('h A'); // 7 PM
+    } else if (date.minute() === 15) {
+      format = date.format('[quarter past] h A');
+    } else if (date.minute() === 30) {
+      format = date.format('[half past] h A');
+    } else if (date.minute() === 45) {
+      var nextHour = date.add(1, 'hour');
+      format = nextHour.format('[quarter to] h A');
+    } else {
+      format = date.format('h:m A'); // 6:24 AM
+    }
+
+    // Some speech synthesisers pronounce "AM" as in "ham" (not "A. M.").
+    return format.replace(/([0-9]) ?AM$/gi, '$1 A.M.').replace(/([0-9]) ?PM$/gi, '$1 P.M.');
+  };
+
+  return QueryConfirmation;
+}();
+
+var PATTERNS$3 = {
+  en: {
+    formatUser: function formatUser(user) {
+      return user.replace(/\bI\b/gi, 'me').replace(/\bmy\b/gi, 'me').replace(/\bmine\b/gi, 'me');
+    }
+  },
+  fr: {
+    formatUser: function formatUser(user) {
+      return user;
+    }
+  },
+  ja: {
+    formatUser: function formatUser(user) {
+      return user;
+    }
+  }
+};
+
 // @todo Handle the case where a time range is specified.
+
 var QueryRefiner = function () {
   function QueryRefiner() {
     classCallCheck(this, QueryRefiner);
@@ -885,8 +1046,15 @@ var QueryRefiner = function () {
     var hasUsers = obj.recipients !== null && obj.recipients.length > 0;
     var hasNoActions = obj.action === null;
 
-    if (obj.cleaned.match(/^(?:What|Where)/i) && hasTime && hasUsers && hasNoActions) {
+    if (obj.cleaned.match(/^(?:What|Where|When)/i) && hasTime && hasUsers && hasNoActions) {
+      var queryConfirmation = new QueryConfirmation({
+        due: obj.time[0].start,
+        recipients: obj.recipients
+      });
+
       obj.due = obj.time[0].start;
+      obj.recipients = obj.recipients.map(PATTERNS$3.en.formatUser);
+      obj.confirmation = queryConfirmation.confirm.bind(queryConfirmation);
       obj.intent = 'query';
     }
 

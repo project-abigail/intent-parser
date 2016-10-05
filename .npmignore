@@ -1,0 +1,8 @@
+.idea/
+node_modules/
+test/
+.babelrc
+.gitignore
+.npmignore
+rollup.config.js
+TODO.md

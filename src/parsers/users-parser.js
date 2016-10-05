@@ -3,7 +3,13 @@ const PATTERNS = {
     patterns: [
       /^Remind (.+?) (?:to|at|on|by|that|about)\b/i,
       /^Where (?:am|are|is) (.+?) (?:at|on|by)\b/i,
+      /^Where (?:am|are|is) (.+?) supposed to\b/i,
+      /^Where should (.+?) go\b/i,
       /^What (?:am|are|is) (.+?) doing\b/i,
+      /^What (?:am|are|is) (.+?) supposed to\b/i,
+      /^What should (.+?) do\b/i,
+      /^What (?:do|does) (.+?) do\b/i,
+      /^What is (.+?)(?:'s)? (?:schedule|planning|calendar|agenda)\b/i,
       /([^ ]+ (?:and|&) [^ ]+)/i, // @todo Improve with more patterns.
     ],
     // @see http://www.unicode.org/cldr/charts/29/summary/en.html#6402

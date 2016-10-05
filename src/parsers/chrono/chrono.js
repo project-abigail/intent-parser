@@ -41,6 +41,8 @@ dayPeriodsParser.extract = (text, ref, match) => {
       hour = 22;
       meridiem = 1;
       break;
+    default:
+      break;
   }
 
   return new chrono.ParsedResult({

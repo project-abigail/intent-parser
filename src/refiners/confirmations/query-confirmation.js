@@ -1,20 +1,14 @@
-import moment from 'moment';
-import TwitterCldr from 'twitter_cldr';
+/* global TwitterCldr, TwitterCldrDataBundle */
 
-/*
- * @todo:
- *   * @see http://www.unicode.org/cldr/charts/29/verify/dates/en.html
- *     for formatting the time of the day.
- */
+import moment from 'moment';
 
 const p = Object.freeze({
   // Properties
+  time: Symbol('time'),
+  users: Symbol('users'),
   listFormatter: Symbol('listFormatter'),
 
   // Methods
-  getLocalised: Symbol('getLocalised'),
-  formatUser: Symbol('formatUser'),
-  formatAction: Symbol('formatAction'),
   formatTime: Symbol('formatTime'),
   isToday: Symbol('isToday'),
   isTomorrow: Symbol('isTomorrow'),
@@ -22,10 +16,8 @@ const p = Object.freeze({
   formatHoursAndMinutes: Symbol('formatHoursAndMinutes'),
 });
 
-const DEFAULT_LOCALE = 'en';
 const PATTERNS = {
   en: {
-    template: `OK, I'll remind [users] [action] [time].`,
     formatUser: (user) => user
       .replace(/\bme\b/gi, 'you')
       .replace(/\bI am\b/gi, 'you are')
@@ -36,99 +28,61 @@ const PATTERNS = {
       .replace(/\bmine\b/gi, 'yours'),
   },
   fr: {
-    template: `OK, je rappelerai [users] [action] [time].`,
     formatUser: (user) => user,
   },
   ja: {
-    template: `承知しました。[time][users]に[action]をリマインドします。`,
     formatUser: (user) => user,
   },
 };
 
-export default class ReminderConfirmation {
-  constructor(locale = DEFAULT_LOCALE) {
-    this.locale = locale;
-
+export default class QueryConfirmation {
+  constructor({ due, recipients }) {
     TwitterCldr.set_data(TwitterCldrDataBundle);
     this[p.listFormatter] = new TwitterCldr.ListFormatter();
+
+    this[p.time] = due;
+    this[p.users] = recipients;
   }
 
-  /**
-   * Generate a phrase to be spoken to confirm a reminder.
-   *
-   * @param {Object} reminder
-   * @return {string}
-   */
   confirm(reminder) {
-    const template = this[p.getLocalised]('template');
-    const data = {
-      users: this[p.formatUser](reminder),
-      action: this[p.formatAction](reminder),
-      time: this[p.formatTime](reminder),
-    };
+    // We use the users from the original query rather than the found reminder.
+    const users = this[p.formatUser](this[p.users]);
 
-    return template.replace(/\[([^\]]+)\]/g, (match, placeholder) => {
-      return data[placeholder];
-    });
-  }
-
-  /**
-   * Given a property of the PATTERNS object, returns the one matching the
-   * current locale or the default one if non existing.
-   *
-   * @param {string} prop
-   * @returns {*}
-   */
-  [p.getLocalised](prop) {
-    let locale = this.locale;
-    if (!PATTERNS[this.locale] || !PATTERNS[this.locale][prop]) {
-      locale = DEFAULT_LOCALE;
+    if (!reminder) {
+      const time = this[p.formatTime]({ due: this[p.time] });
+      return `I can't find anything scheduled for ${users} ${time}.`;
     }
 
-    return PATTERNS[locale][prop];
+    const action = reminder.action;
+    const time = this[p.formatTime](reminder);
+
+    if (users === 'you' || this[p.users].length >= 1) {
+      return `${time}, ${users} have the following activity: "${action}".`;
+    }
+
+    return `${time}, ${users} has the following activity: "${action}".`;
   }
 
-  [p.formatUser]({ recipients }) {
-    const formatUser = this[p.getLocalised]('formatUser');
-    const formattedUsers = recipients.map(formatUser);
+  [p.formatUser](users) {
+    const formattedUsers = users.map(PATTERNS.en.formatUser);
     return this[p.listFormatter].format(formattedUsers);
   }
 
-  [p.formatAction]({ action, cleaned }) {
-    const formatUser = this[p.getLocalised]('formatUser');
-    const formattedAction = formatUser(action);
-
-    const PATTERN1 = new RegExp(`\\bthat ${action}`, 'iu');
-    const PATTERN2 = new RegExp(`\\bit is ${action}`, 'iu');
-    const PATTERN3 = new RegExp(`\\bthere is ${action}`, 'iu');
-    const PATTERN4 = new RegExp(`\\babout ${action}`, 'iu');
-
-    if (PATTERN1.test(cleaned)) {
-      return `that ${formattedAction}`;
-    } else if (PATTERN2.test(cleaned)) {
-      return `that it is ${formattedAction}`;
-    } else if (PATTERN3.test(cleaned)) {
-      return `that there is ${formattedAction}`;
-    } else if (PATTERN4.test(cleaned)) {
-      return `about ${formattedAction}`;
-    }
-
-    return `to ${formattedAction}`;
-  }
-
   [p.formatTime]({ due }) {
+    const hour = this[p.formatHoursAndMinutes](due);
+
     if (this[p.isToday](due)) {
-      const hour = this[p.formatHoursAndMinutes](due);
       return `at ${hour} today`;
     } else if (this[p.isTomorrow](due)) {
-      const hour = this[p.formatHoursAndMinutes](due);
       return `at ${hour} tomorrow`;
       // @todo Add a pattern here with the weekday if within 7 days.
     } else if (this[p.isThisMonth](due)) {
-      return moment(due).format('[on the] Do');
+      const day = moment(due).format('Do');
+      return `at ${hour} on the ${day}`;
     }
 
-    return moment(due).format('[on] MMMM [the] Do');
+    const day = moment(due).format('MMMM [the] Do');
+    return `at ${hour} on ${day}`;
   }
 
   [p.isToday](date) {
