@@ -8,12 +8,10 @@ export default {
   external: [
     'chrono-node',
     'moment',
-    'twitter_cldr',
   ],
   globals: {
     'chrono-node': 'chrono',
     'moment': 'moment',
-    'twitter_cldr': 'TwitterCldr',
   },
   dest: 'dist/intent-parser.js',
   sourceMap: true,

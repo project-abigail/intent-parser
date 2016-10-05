@@ -1,5 +1,6 @@
+/* global TwitterCldr, TwitterCldrDataBundle */
+
 import moment from 'moment';
-import TwitterCldr from 'twitter_cldr';
 
 /*
  * @todo:
@@ -49,8 +50,14 @@ export default class ReminderConfirmation {
   constructor(locale = DEFAULT_LOCALE) {
     this.locale = locale;
 
-    TwitterCldr.set_data(TwitterCldrDataBundle);
-    this[p.listFormatter] = new TwitterCldr.ListFormatter();
+    if (TwitterCldr !== undefined) {
+      TwitterCldr.set_data(TwitterCldrDataBundle);
+      this[p.listFormatter] = new TwitterCldr.ListFormatter();
+    } else {
+      this[p.listFormatter] = {
+        format: (a) => a.join(' and ')
+      };
+    }
   }
 
   /**

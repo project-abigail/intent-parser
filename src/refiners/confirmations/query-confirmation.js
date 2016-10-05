@@ -37,8 +37,14 @@ const PATTERNS = {
 
 export default class QueryConfirmation {
   constructor({ due, recipients }) {
-    TwitterCldr.set_data(TwitterCldrDataBundle);
-    this[p.listFormatter] = new TwitterCldr.ListFormatter();
+    if (TwitterCldr !== undefined) {
+      TwitterCldr.set_data(TwitterCldrDataBundle);
+      this[p.listFormatter] = new TwitterCldr.ListFormatter();
+    } else {
+      this[p.listFormatter] = {
+        format: (a) => a.join(' and ')
+      };
+    }
 
     this[p.time] = due;
     this[p.users] = recipients;

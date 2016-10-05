@@ -1,12 +1,11 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chrono-node'), require('moment'), require('twitter_cldr')) :
-  typeof define === 'function' && define.amd ? define(['chrono-node', 'moment', 'twitter_cldr'], factory) :
-  (global.IntentParser = factory(global.chrono,global.moment,global.TwitterCldr));
-}(this, (function (chrono,moment,TwitterCldr$1) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('chrono-node'), require('moment')) :
+  typeof define === 'function' && define.amd ? define(['chrono-node', 'moment'], factory) :
+  (global.IntentParser = factory(global.chrono,global.moment));
+}(this, (function (chrono,moment) { 'use strict';
 
 chrono = 'default' in chrono ? chrono['default'] : chrono;
 moment = 'default' in moment ? moment['default'] : moment;
-TwitterCldr$1 = 'default' in TwitterCldr$1 ? TwitterCldr$1['default'] : TwitterCldr$1;
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
@@ -629,6 +628,8 @@ var ActionParser = function () {
   return ActionParser;
 }();
 
+/* global TwitterCldr, TwitterCldrDataBundle */
+
 /*
  * @todo:
  *   * @see http://www.unicode.org/cldr/charts/29/verify/dates/en.html
@@ -679,8 +680,16 @@ var ReminderConfirmation = function () {
 
     this.locale = locale;
 
-    TwitterCldr$1.set_data(TwitterCldrDataBundle);
-    this[p$5.listFormatter] = new TwitterCldr$1.ListFormatter();
+    if (TwitterCldr !== undefined) {
+      TwitterCldr.set_data(TwitterCldrDataBundle);
+      this[p$5.listFormatter] = new TwitterCldr.ListFormatter();
+    } else {
+      this[p$5.listFormatter] = {
+        format: function format(a) {
+          return a.join(' and ');
+        }
+      };
+    }
   }
 
   /**
@@ -904,8 +913,16 @@ var QueryConfirmation = function () {
     var recipients = _ref.recipients;
     classCallCheck(this, QueryConfirmation);
 
-    TwitterCldr.set_data(TwitterCldrDataBundle);
-    this[p$6.listFormatter] = new TwitterCldr.ListFormatter();
+    if (TwitterCldr !== undefined) {
+      TwitterCldr.set_data(TwitterCldrDataBundle);
+      this[p$6.listFormatter] = new TwitterCldr.ListFormatter();
+    } else {
+      this[p$6.listFormatter] = {
+        format: function format(a) {
+          return a.join(' and ');
+        }
+      };
+    }
 
     this[p$6.time] = due;
     this[p$6.users] = recipients;

@@ -1,6 +1,6 @@
 {
   "name": "intent-parser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A basic intent parser designed for Project Abigail.",
   "main": "dist/intent-parser.js",
   "jsnext:main": "src/intent-parser.js",
@@ -16,8 +16,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "chrono-node": "^1.2.4",
-    "moment": "^2.15.1",
-    "twitter_cldr": "^2.1.1"
+    "moment": "^2.15.1"
   },
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.8.0",
