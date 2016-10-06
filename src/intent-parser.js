@@ -2,6 +2,7 @@ import NormaliseCleaner from './cleaners/normalise-cleaner';
 import ContractionsCleaner from './cleaners/contractions-cleaner';
 import SalutationsCleaner from './cleaners/salutations-cleaner';
 import PolitenessCleaner from './cleaners/politeness-cleaner';
+import QuestionsCleaner from './cleaners/questions-cleaner';
 
 import TimeParser from './parsers/time-parser';
 import UsersParser from './parsers/users-parser';
@@ -24,6 +25,7 @@ export default class IntentParser {
       new ContractionsCleaner(),
       new SalutationsCleaner(),
       new PolitenessCleaner(),
+      new QuestionsCleaner(), // Must go after PolitenessCleaner`
     ];
     this[p.parsers] = [
       new TimeParser(),

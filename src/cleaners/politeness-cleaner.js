@@ -2,35 +2,20 @@
 // * "Tell me where you are." => "Where are you?"
 export default class PolitenessCleaner {
   clean(obj = { cleaned: '' }) {
-    let cleaned = obj.cleaned
-      .replace(new RegExp('^(?:Can you ' +
-          '|Can you please ' +
+    const cleaned = obj.cleaned
+      .replace(
+        new RegExp('^(?:Can you please ' +
           '|Please can you ' +
-          '|Please ' +
-          '|Please do ' +
-          '|Will you ' +
+          '|Can you ' +
           '|Will you please ' +
-          ')?remind\\b', 'i'),
-        'Remind')
-      .replace(new RegExp('^(?:Can you tell me ' +
-          '|Can you please tell me ' +
-          '|Please tell me ' +
-          '|Please do tell me ' +
-          '|Tell me ' +
-          '|Will you tell me ' +
-          '|Will you please tell me ' +
-          ')?wh(at|ere|en)\\b', 'i'),
-        'Wh$1');
-
-    if (cleaned !== obj.cleaned) {
-      if (cleaned.match(/^Remind\b/i)) {
-        // Remove question mark if it was a question.
-        cleaned = cleaned.replace(/\?+$/, '.');
-      } else if (cleaned.match(/^Wh(at|ere|en)\b/i)) {
-        // Add question mark if it is a question.
-        cleaned = cleaned.replace(/\.+$/, '?');
-      }
-    }
+          '|Please will you ' +
+          '|Will you ' +
+          '|Please do ' +
+          '|Please ' +
+          ')?(.)', 'i'),
+        // Capitalise the first letter.
+        (match, letter) => letter.toUpperCase()
+      );
 
     obj.cleaned = cleaned;
 
