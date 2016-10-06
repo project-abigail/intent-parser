@@ -6,19 +6,19 @@ describe('SalutationsCleaner', () => {
     const fixtures = [
       [
         'Hello how are you?',
-        'how are you?',
+        'How are you?',
       ],
       [
         'Hey how are you?',
-        'how are you?',
+        'How are you?',
       ],
       [
         'Hi how are you?',
-        'how are you?',
+        'How are you?',
       ],
       [
         'Yo how are you?',
-        'how are you?',
+        'How are you?',
       ],
     ];
 
@@ -40,11 +40,11 @@ describe('SalutationsCleaner', () => {
       ],
       [
         'Hey, how are you?',
-        'how are you?',
+        'How are you?',
       ],
       [
         'Hey!! how are you?',
-        'how are you?',
+        'How are you?',
       ],
       [
         'Hey. How are you?',
