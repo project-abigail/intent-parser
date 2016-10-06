@@ -36,7 +36,7 @@ describe('chrono', function() {
         chrono.setRef(ref);
         const dates = chrono.parse(sentence);
 
-        assert.isArray(dates);
+        assert(Array.isArray(dates));
         assert.equal(dates.length, expected.length);
 
         dates.forEach(({ index, start, end, text }, i) => {
@@ -130,7 +130,7 @@ describe('chrono', function() {
         chrono.setRef(ref || new Date());
         const dates = chrono.parse(sentence);
 
-        assert.isArray(dates);
+        assert(Array.isArray(dates));
         assert.equal(dates.length, expected.length);
 
         dates.forEach(({ index, start, end, text }, i) => {
