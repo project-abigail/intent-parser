@@ -8,6 +8,8 @@ export default class PolitenessCleaner {
           '|Please can you ' +
           '|Please ' +
           '|Please do ' +
+          '|Will you ' +
+          '|Will you please ' +
           ')?remind\\b', 'i'),
         'Remind')
       .replace(new RegExp('^(?:Can you tell me ' +
@@ -15,6 +17,8 @@ export default class PolitenessCleaner {
           '|Please tell me ' +
           '|Please do tell me ' +
           '|Tell me ' +
+          '|Will you tell me ' +
+          '|Will you please tell me ' +
           ')?wh(at|ere|en)\\b', 'i'),
         'Wh$1');
 

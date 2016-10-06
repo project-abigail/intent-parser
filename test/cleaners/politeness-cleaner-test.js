@@ -21,6 +21,14 @@ describe('PolitenessCleaner', () => {
         'Remind me of something',
       ],
       [
+        'Will you remind me of something',
+        'Remind me of something',
+      ],
+      [
+        'Will you please remind me of something',
+        'Remind me of something',
+      ],
+      [
         'Can you tell me what do I do',
         'What do I do',
       ],
@@ -34,6 +42,14 @@ describe('PolitenessCleaner', () => {
       ],
       [
         'Tell me when do I have to go',
+        'When do I have to go',
+      ],
+      [
+        'Will you tell me when do I have to go',
+        'When do I have to go',
+      ],
+      [
+        'Will you please tell me when do I have to go',
         'When do I have to go',
       ],
     ];

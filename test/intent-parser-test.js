@@ -3,7 +3,7 @@ import chrono from '../src/parsers/chrono/chrono';
 import moment from 'moment';
 import IntentParser from '../src/intent-parser';
 
-describe('intent-parser', () => {
+describe('IntentParser', () => {
   describe('Properly parses expected reminder sentences.', () => {
     const fixtures = [
       {
