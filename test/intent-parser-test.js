@@ -3,8 +3,8 @@ import chrono from '../src/parsers/chrono/chrono';
 import moment from 'moment';
 import IntentParser from '../src/intent-parser';
 
-describe('intent-parser', function() {
-  describe('Properly parses expected reminder sentences.', function() {
+describe('intent-parser', () => {
+  describe('Properly parses expected reminder sentences.', () => {
     const fixtures = [
       {
         sentence: 'Remind me to go to the office at 5pm.',
@@ -57,7 +57,7 @@ describe('intent-parser', function() {
     ];
 
     fixtures.forEach(({ sentence, parsed }) => {
-      it(sentence, function() {
+      it(sentence, () => {
         chrono.setRef(new Date());
         const intentParser = new IntentParser();
         return intentParser.parse(sentence).then((result) => {

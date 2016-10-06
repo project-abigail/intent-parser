@@ -2,8 +2,8 @@ import assert from 'assert';
 import moment from 'moment';
 import chrono from '../../../src/parsers/chrono/chrono';
 
-describe('chrono', function() {
-  describe('Returns hours in the future only.', function() {
+describe('chrono', () => {
+  describe('Returns hours in the future only.', () => {
     const fixtures = [
       {
         ref: moment({ hour: 11 }).toDate(),
@@ -32,7 +32,7 @@ describe('chrono', function() {
     ];
 
     fixtures.forEach(({ ref, sentence, expected }) => {
-      it(sentence, function() {
+      it(sentence, () => {
         chrono.setRef(ref);
         const dates = chrono.parse(sentence);
 
@@ -51,7 +51,7 @@ describe('chrono', function() {
     });
   });
 
-  describe('Parses day periods according to CLDR.', function() {
+  describe('Parses day periods according to CLDR.', () => {
     const fixtures = [
       {
         sentence: 'At midnight tomorrow.',
@@ -126,7 +126,7 @@ describe('chrono', function() {
     ];
 
     fixtures.forEach(({ ref, sentence, expected }) => {
-      it(sentence, function() {
+      it(sentence, () => {
         chrono.setRef(ref || new Date());
         const dates = chrono.parse(sentence);
 
