@@ -1,6 +1,6 @@
 {
   "name": "intent-parser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A basic intent parser designed for Project Abigail.",
   "main": "dist/intent-parser.js",
   "jsnext:main": "src/intent-parser.js",
@@ -26,7 +26,8 @@
     "babel-register": "^6.16.3",
     "mocha": "^3.1.0",
     "rollup": "^0.36.1",
-    "rollup-plugin-babel": "^2.6.1"
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-uglify": "^1.0.1"
   },
   "directories": {
     "test": "test"
