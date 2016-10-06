@@ -680,7 +680,7 @@ var ReminderConfirmation = function () {
 
     this.locale = locale;
 
-    if (TwitterCldr !== undefined) {
+    if (typeof TwitterCldr !== 'undefined') {
       TwitterCldr.set_data(TwitterCldrDataBundle);
       this[p$5.listFormatter] = new TwitterCldr.ListFormatter();
     } else {
@@ -913,7 +913,7 @@ var QueryConfirmation = function () {
     var recipients = _ref.recipients;
     classCallCheck(this, QueryConfirmation);
 
-    if (TwitterCldr !== undefined) {
+    if (typeof TwitterCldr !== 'undefined') {
       TwitterCldr.set_data(TwitterCldrDataBundle);
       this[p$6.listFormatter] = new TwitterCldr.ListFormatter();
     } else {

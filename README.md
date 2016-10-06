@@ -61,3 +61,9 @@ looks like a question then it is likely a query about someone's activity.
 ```bash
 $ npm run build
 ```
+
+## Unit tests
+
+```bash
+$ npm test
+```

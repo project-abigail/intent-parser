@@ -37,7 +37,7 @@ const PATTERNS = {
 
 export default class QueryConfirmation {
   constructor({ due, recipients }) {
-    if (TwitterCldr !== undefined) {
+    if (typeof TwitterCldr !== 'undefined') {
       TwitterCldr.set_data(TwitterCldrDataBundle);
       this[p.listFormatter] = new TwitterCldr.ListFormatter();
     } else {
