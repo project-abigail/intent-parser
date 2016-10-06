@@ -1,4 +1,4 @@
-# :interrobang::bangbang: Intent parser
+# :interrobang::bangbang: Intent parser [![Build Status](https://travis-ci.org/fxbox/intent-parser.svg?branch=master)](https://travis-ci.org/fxbox/intent-parser)
 
 > An intent parser designed for Project Abigail.
 
