@@ -6,19 +6,19 @@ export default {
   format: 'umd',
   plugins: [
     babel({
-        babelrc: false,
-        presets: [
-          "es2015-rollup"
-        ],
-        plugins: [
-          [
-            "transform-es2015-classes",
-            {
-              "loose": true
-            }
-          ]
+      babelrc: false,
+      presets: [
+        'es2015-rollup'
+      ],
+      plugins: [
+        [
+          'transform-es2015-classes',
+          {
+            loose: true
+          }
         ]
-      }
+      ]
+    }
     ),
     uglify()],
   moduleName: 'IntentParser',
@@ -28,7 +28,7 @@ export default {
   ],
   globals: {
     'chrono-node': 'chrono',
-    'moment': 'moment',
+    moment: 'moment',
   },
   dest: 'dist/intent-parser.js',
   sourceMap: true,

@@ -50,13 +50,13 @@ export default class ReminderConfirmation {
   constructor(locale = DEFAULT_LOCALE) {
     this.locale = locale;
 
-    if (typeof TwitterCldr !== 'undefined') {
-      TwitterCldr.set_data(TwitterCldrDataBundle);
-      this[p.listFormatter] = new TwitterCldr.ListFormatter();
-    } else {
+    if (typeof TwitterCldr === 'undefined') {
       this[p.listFormatter] = {
         format: (a) => a.join(' and ')
       };
+    } else {
+      TwitterCldr.set_data(TwitterCldrDataBundle);
+      this[p.listFormatter] = new TwitterCldr.ListFormatter();
     }
   }
 
