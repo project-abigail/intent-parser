@@ -34,10 +34,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fxbox/intent-parser.git"
+    "url": "git+https://github.com/project-abigail/intent-parser.git"
   },
   "bugs": {
-    "url": "https://github.com/fxbox/intent-parser/issues"
+    "url": "https://github.com/project-abigail/intent-parser/issues"
   },
-  "homepage": "https://github.com/fxbox/intent-parser#readme"
+  "homepage": "https://github.com/project-abigail/intent-parser#readme"
 }
