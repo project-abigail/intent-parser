@@ -84,7 +84,7 @@ describe('ActionParser', () => {
         time: [
           {},
           {},
-        ]
+        ],
       })
         .then((result) => {
           assert.equal(result.action, null);
