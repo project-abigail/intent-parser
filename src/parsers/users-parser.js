@@ -39,7 +39,6 @@ const PATTERNS = {
 const p = Object.freeze({
   users: Symbol('users'),
   normalise: Symbol('normalise'),
-  parseUsers: Symbol('parseUsers'),
 });
 
 // @todo Import and use the list of users when multiusers db is ready.
@@ -59,7 +58,7 @@ export default class UsersParser {
         return false;
       }
 
-      users = this[p.parseUsers](match[1]);
+      users = this.parseUsers(match[1]);
       return !!users.length;
     });
 
@@ -68,7 +67,7 @@ export default class UsersParser {
     return Promise.resolve(obj);
   }
 
-  [p.parseUsers](string = '') {
+  parseUsers(string = '') {
     return string
       .split(PATTERNS.en.listBreaker)
       .map((user) => user.trim())
