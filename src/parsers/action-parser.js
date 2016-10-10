@@ -65,6 +65,12 @@ export default class ActionParser {
       .trim();
   }
 
+  /**
+   * Extract an action from a sentence that has no time references.
+   *
+   * @param {string} text
+   * @return {string}
+   */
   [p.parseNoDates](text = '') {
     let action = null;
 
