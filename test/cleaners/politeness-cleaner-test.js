@@ -36,6 +36,14 @@ describe('PolitenessCleaner', () => {
         'Please remind me of something',
         'Remind me of something',
       ],
+      [
+        'Could you please remind me of something',
+        'Remind me of something',
+      ],
+      [
+        'Please would you remind me of something',
+        'Remind me of something',
+      ],
     ];
 
     fixtures.forEach(([input, output]) => {

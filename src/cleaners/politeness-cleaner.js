@@ -4,12 +4,19 @@ export default class PolitenessCleaner {
   clean(obj = { cleaned: '' }) {
     const cleaned = obj.cleaned
       .replace(
-        new RegExp('^(?:Can you please ' +
-          '|Please can you ' +
-          '|Can you ' +
+        new RegExp('^(?:' +
+          '|Could you please ' +
+          '|Please could you ' +
+          '|Could you ' +
+          '|Would you please ' +
+          '|Please would you ' +
+          '|Would you ' +
           '|Will you please ' +
           '|Please will you ' +
           '|Will you ' +
+          '|Can you please ' +
+          '|Please can you ' +
+          '|Can you ' +
           '|Please do ' +
           '|Please ' +
           ')?(.)', 'i'),
