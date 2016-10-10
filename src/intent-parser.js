@@ -38,8 +38,10 @@ export default class IntentParser {
     ];
 
     // Add it to the global scope for debugging.
+    // eslint-disable-next-line no-new-func
     const global = new Function('return this')();
     global.intentParser = this;
+    // eslint-enable
   }
 
   parse(text = '') {

@@ -7,6 +7,7 @@
   "scripts": {
     "build": "rollup --config",
     "prepublish": "npm run build",
+    "lint": "eslint .",
     "test": "mocha --require babel-register --preset es2015 --plugins transform-es2015-modules-commonjs --recursive test"
   },
   "keywords": [
@@ -24,6 +25,7 @@
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-es2015-rollup": "^1.2.0",
     "babel-register": "^6.16.3",
+    "eslint": "^3.7.1",
     "mocha": "^3.1.0",
     "rollup": "^0.36.1",
     "rollup-plugin-babel": "^2.6.1",
