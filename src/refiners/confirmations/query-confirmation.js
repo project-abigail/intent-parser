@@ -39,7 +39,7 @@ export default class QueryConfirmation {
   constructor({ due, recipients }) {
     if (typeof TwitterCldr === 'undefined') {
       this[p.listFormatter] = {
-        format: (a) => a.join(' and ')
+        format: (a) => a.join(' and '),
       };
     } else {
       TwitterCldr.set_data(TwitterCldrDataBundle);

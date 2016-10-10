@@ -8,18 +8,17 @@ export default {
     babel({
       babelrc: false,
       presets: [
-        'es2015-rollup'
+        'es2015-rollup',
       ],
       plugins: [
         [
           'transform-es2015-classes',
           {
-            loose: true
-          }
-        ]
-      ]
-    }
-    ),
+            loose: true,
+          },
+        ],
+      ],
+    }),
     uglify()],
   moduleName: 'IntentParser',
   external: [
