@@ -6,7 +6,7 @@ export default class QuestionsCleaner {
           '|Let me know ' +
           '|Inform me ' +
           '|I want to know ' +
-          ')wh(at|ere|en|o)\\b', 'iu'),
+          ')wh(at|ere|en|o)\\b', 'i'),
         'Wh$1'
       );
 

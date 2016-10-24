@@ -32,7 +32,7 @@ const PATTERNS = {
       /(.+)に(?:.+)を思い出させて/i,
       /(.+)は(?:.+)と言うリマインダーを作成して/i,
     ],
-    listBreaker: new RegExp(`、`, 'gu'),
+    listBreaker: /、/gu,
   },
 };
 

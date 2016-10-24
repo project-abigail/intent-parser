@@ -105,10 +105,10 @@ export default class ReminderConfirmation {
     const formatUser = this[p.getLocalised]('formatUser');
     const formattedAction = formatUser(action);
 
-    const PATTERN1 = new RegExp(`\\bthat ${action}`, 'iu');
-    const PATTERN2 = new RegExp(`\\bit is ${action}`, 'iu');
-    const PATTERN3 = new RegExp(`\\bthere is ${action}`, 'iu');
-    const PATTERN4 = new RegExp(`\\babout ${action}`, 'iu');
+    const PATTERN1 = new RegExp(`\\bthat ${action}`, 'i');
+    const PATTERN2 = new RegExp(`\\bit is ${action}`, 'i');
+    const PATTERN3 = new RegExp(`\\bthere is ${action}`, 'i');
+    const PATTERN4 = new RegExp(`\\babout ${action}`, 'i');
 
     if (PATTERN1.test(cleaned)) {
       return `that ${formattedAction}`;

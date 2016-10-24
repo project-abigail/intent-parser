@@ -10,7 +10,7 @@ export default class SalutationsCleaner {
   clean(obj = { cleaned: '' }) {
     const cleaned = obj.cleaned
       .replace(
-        new RegExp(`^(?:Hello|Hey|Hi|Yo)${PUNCTUATION.en}* (.)`, 'iu'),
+        new RegExp(`^(?:Hello|Hey|Hi|Yo)${PUNCTUATION.en}* (.)`, 'i'),
         // Capitalise the first letter.
         (match, letter) => letter.toUpperCase()
       );
