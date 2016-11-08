@@ -33,7 +33,7 @@ dayPeriodsParser.extract = (text, ref, match) => {
       break;
     case 'evening':
     case 'in the evening':
-      hour = 19;
+      hour = 18;
       meridiem = 1;
       break;
     case 'night':
@@ -95,6 +95,7 @@ customChrono.refiners.push(forwardHoursRefiner);
 export default {
   setRef: (newRef) => ref = newRef,
   parse: (phrase) => customChrono.parse(phrase, ref, {
+    forwardDate: true,
     forwardDatesOnly: true,
     forwardHoursOnly: true,
   }),

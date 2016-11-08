@@ -105,7 +105,7 @@ describe('chrono', () => {
         expected: [
           {
             index: 0,
-            start: moment({ hour: 19 }).add(1, 'day').toDate().getTime(),
+            start: moment({ hour: 18 }).add(1, 'day').toDate().getTime(),
             end: undefined,
             text: 'Tomorrow evening',
           },

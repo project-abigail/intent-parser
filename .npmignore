@@ -6,3 +6,4 @@ test/
 .npmignore
 rollup.config.js
 TODO.md
+yarn.lock
