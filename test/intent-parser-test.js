@@ -1,5 +1,4 @@
 import assert from 'assert';
-import chrono from '../src/parsers/chrono/chrono';
 import moment from 'moment';
 import IntentParser from '../src/intent-parser';
 
@@ -58,7 +57,6 @@ describe('IntentParser', () => {
 
     fixtures.forEach(({ sentence, parsed }) => {
       it(sentence, () => {
-        chrono.setRef(new Date());
         const intentParser = new IntentParser();
         return intentParser.parse(sentence).then((result) => {
           assert.deepEqual(result.recipients, parsed.recipients);
