@@ -87,14 +87,12 @@ forwardHoursRefiner.refine = (text, results, opt = {}) => {
   }
 };
 
-let ref = new Date();
 const customChrono = new chrono.Chrono(chrono.options.casualOption());
 customChrono.parsers.push(dayPeriodsParser);
 customChrono.refiners.push(forwardHoursRefiner);
 
 export default {
-  setRef: (newRef) => ref = newRef,
-  parse: (phrase) => customChrono.parse(phrase, ref, {
+  parse: (phrase) => customChrono.parse(phrase, null, {
     forwardDate: true,
     forwardDatesOnly: true,
     forwardHoursOnly: true,
