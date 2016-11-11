@@ -2,8 +2,12 @@
 node_modules/
 test/
 .babelrc
+.eslintignore
+.eslintrc.json
 .gitignore
 .npmignore
+.nvmrc
+.travis.yml
 rollup.config.js
 TODO.md
 yarn.lock

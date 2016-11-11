@@ -70,11 +70,10 @@ describe('chrono', () => {
     sandbox.useFakeTimers(new Date().getTimezoneOffset() * 60 * 1000);
     const sentence = 'at 5pm today';
     let [ date ] = chrono.parse(sentence);
-    console.log(date);
     assert.equal(date.start.knownValues.day, 1);
 
     sandbox.clock.tick(5 * 24 * 60 * 60 * 1000); // 5 days later
-    [ date ] = chrono.parse(sentence);
+    [date] = chrono.parse(sentence);
     assert.equal(date.start.knownValues.day, 6);
   });
 
