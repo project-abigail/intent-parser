@@ -6,8 +6,8 @@ import chrono from 'chrono-node';
  */
 const dayPeriodsParser = new chrono.Parser();
 dayPeriodsParser.pattern =
-  () => new RegExp('midnight|morning|in the morning|noon|' +
-    'afternoon|in the afternoon|evening|in the evening|night|at night', 'i');
+  () => new RegExp('\\b(?:midnight|morning|in the morning|noon|afternoon|' +
+    'in the afternoon|evening|in the evening|night|at night)\\b', 'i');
 dayPeriodsParser.extract = (text, ref, match) => {
   let hour;
   let meridiem;
@@ -56,6 +56,33 @@ dayPeriodsParser.extract = (text, ref, match) => {
   });
 };
 
+const currentMonthDayParser = Object.assign(
+  new chrono.Parser(),
+  {
+    pattern: () => /\b(?:on|by)\s+the\s+(\d\d?)(?:th|st|rd|nd)\b/,
+    extract: (text, ref, match) => {
+      const day = Number(match[1]);
+      const currentDay = ref.getDate(); // TODO support timezones
+      const currentMonth = ref.getMonth();
+
+      const month = day >= currentDay ? currentMonth : currentMonth + 1;
+
+      return new chrono.ParsedResult({
+        ref,
+        text: match[0],
+        index: match.index,
+        start: {
+          // JS date have months between 0 and 11,
+          // while chrono expects a month between 1 and 12.
+          month: month + 1,
+          day,
+        },
+      });
+    },
+  }
+);
+
+
 /**
  * When the meridiem is not specified, set the time to after the current time.
  * `at 5 today` (current time is 3pm) => `5pm`.
@@ -89,6 +116,7 @@ forwardHoursRefiner.refine = (text, results, opt = {}) => {
 
 const customChrono = new chrono.Chrono(chrono.options.casualOption());
 customChrono.parsers.push(dayPeriodsParser);
+customChrono.parsers.push(currentMonthDayParser);
 customChrono.refiners.push(forwardHoursRefiner);
 
 export default {
