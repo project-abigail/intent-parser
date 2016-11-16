@@ -1,4 +1,5 @@
 import chrono from 'chrono-node';
+import chronoUtils from 'chrono-node/src/utils/EN';
 
 /**
  * Parse day periods according to CLDR.
@@ -59,9 +60,18 @@ dayPeriodsParser.extract = (text, ref, match) => {
 const currentMonthDayParser = Object.assign(
   new chrono.Parser(),
   {
-    pattern: () => /\b(?:on|by)\s+the\s+(\d\d?)(?:th|st|rd|nd)\b/,
+    pattern: () => new RegExp(
+      // eslint-disable-next-line prefer-template
+      '\\bthe (([0-9]{1,2})(?:st|nd|rd|th)?|' +
+      chronoUtils.ORDINAL_WORDS_PATTERN + ')\\b',
+      'i' // flag
+    ),
     extract: (text, ref, match) => {
-      const day = Number(match[1]);
+      const stringMatch = match[1];
+      const numericalDay = match[2];
+      const day = numericalDay
+        ? Number(numericalDay)
+        : chronoUtils.ORDINAL_WORDS[stringMatch.toLowerCase()];
       const currentDay = ref.getDate(); // TODO support timezones
       const currentMonth = ref.getMonth();
 

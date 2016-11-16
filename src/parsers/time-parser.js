@@ -30,6 +30,8 @@ export default class TimeParser {
       const extractedText = date.text;
       let beforeText = text.substr(0, date.index).trim();
       const afterText = text.substr(date.index + extractedText.length).trim();
+
+      // temporary fix for https://github.com/wanasit/chrono/issues/152
       if (/ (?:on|by)$/.test(beforeText)) {
         beforeText = beforeText.slice(0, -3);
       }

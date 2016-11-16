@@ -93,13 +93,26 @@ describe('IntentParser', () => {
       {
         ref: moment({ month: 10, day: 15 }),
         sentence: 'Remind Julien to go to the swimming pool ' +
-        'on the 14th at 2 p.m.',
+        'on the    12 at 2 p.m.',
         parsed: {
           recipients: ['Julien'],
           action: 'go to the swimming pool',
           confirmation: 'OK, I\'ll remind Julien to go to the swimming pool ' +
-          'on December the 14th.',
-          due: moment({ month: 11, day: 14, hour: 14 }).valueOf(),
+          'on December the 12th.',
+          due: moment({ month: 11, day: 12, hour: 14 }).valueOf(),
+          intent: 'reminder',
+        },
+      },
+      {
+        ref: moment({ month: 10, day: 15 }),
+        sentence: 'Remind Julien to go to the swimming pool ' +
+        'on the first at 2 p.m.',
+        parsed: {
+          recipients: ['Julien'],
+          action: 'go to the swimming pool',
+          confirmation: 'OK, I\'ll remind Julien to go to the swimming pool ' +
+          'on December the 1st.',
+          due: moment({ month: 11, day: 1, hour: 14 }).valueOf(),
           intent: 'reminder',
         },
       },
