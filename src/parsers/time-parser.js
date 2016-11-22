@@ -6,9 +6,6 @@ const p = Object.freeze({
 
 /**
  * Current bugs about time extraction from the original text:
- * * The time expressions starting by "on" or "by" are not correctly extracted.
- *   e.g. "The sale on Sunday" => "The sale on" (Incorrect)
- *   e.g. "The sale at 12p.m." => "The sale" (Correct)
  *
  * * When a time frame is set, the "from" should be extracted too.
  *   e.g. "I'm busy from Mon to Tue" => "I'm busy from"
@@ -31,8 +28,15 @@ export default class TimeParser {
       const start = date.start ? Number(date.start.date()) : null;
       const end = date.end ? Number(date.end.date()) : null;
       const extractedText = date.text;
-      const processedText = text.substr(0, date.index) +
-        text.substr(date.index + extractedText.length);
+      let beforeText = text.substr(0, date.index).trim();
+      const afterText = text.substr(date.index + extractedText.length).trim();
+
+      // temporary fix for https://github.com/wanasit/chrono/issues/152
+      if (/\b(?:on|by)$/.test(beforeText)) {
+        beforeText = beforeText.slice(0, -3);
+      }
+
+      const processedText = `${beforeText} ${afterText}`;
 
       return { start, end, extractedText, processedText };
     });

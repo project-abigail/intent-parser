@@ -39,7 +39,7 @@ export default class ActionParser {
   parse(obj = { cleaned: '', time: [] }) {
     let action = null;
 
-    if (obj.time === null) {
+    if (!obj.time || !obj.time.length) {
       // We use the original phrase.
       const text = this[p.normalise](obj.cleaned);
       action = this[p.parseNoDates](text);
