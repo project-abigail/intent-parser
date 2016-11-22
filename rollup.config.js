@@ -23,10 +23,12 @@ export default {
   moduleName: 'IntentParser',
   external: [
     'chrono-node',
+    'chrono-node/src/utils/EN',
     'moment',
   ],
   globals: {
     'chrono-node': 'chrono',
+    'chrono-node/src/utils/EN': 'chronoUtils',
     moment: 'moment',
   },
   dest: 'dist/intent-parser.js',
